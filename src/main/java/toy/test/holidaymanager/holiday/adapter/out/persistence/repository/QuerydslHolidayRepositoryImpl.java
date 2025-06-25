@@ -62,4 +62,19 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                 () -> Objects.requireNonNullElse(countQuery.fetchOne(), 0L)
         );
     }
+
+    @Override
+    public List<HolidayJpaEntity> findAllByYearAndCountryCode(final int year, final String countryCode) {
+        return queryFactory
+                .selectFrom(holidayJpaEntity)
+                .distinct()
+                .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity).fetchJoin()
+                .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity).fetchJoin()
+                .where(
+                        holidayJpaEntity.date.year().eq(year),
+                        holidayJpaEntity.countryCode.eq(countryCode)
+                )
+                .orderBy(holidayJpaEntity.date.asc())
+                .fetch();
+    }
 }

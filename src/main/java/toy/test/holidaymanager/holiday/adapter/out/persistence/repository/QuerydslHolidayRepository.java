@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface QuerydslHolidayRepository {
+
     Page<HolidayJpaEntity> findAllByCondition(
             final String countryCode,
             final LocalDate startDate,
@@ -16,4 +17,6 @@ public interface QuerydslHolidayRepository {
             final List<HolidayTypeCode> types,
             final Pageable pageable
     );
+
+    List<HolidayJpaEntity> findAllByYearAndCountryCode(final int year, final String countryCode);
 }
