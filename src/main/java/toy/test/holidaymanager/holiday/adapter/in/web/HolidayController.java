@@ -8,9 +8,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import toy.test.holidaymanager.holiday.adapter.in.dto.PageResponse;
 import toy.test.holidaymanager.holiday.adapter.in.dto.RetrievedHoliday;
-import toy.test.holidaymanager.holiday.application.port.in.RemoveHolidaysUseCase;
-import toy.test.holidaymanager.holiday.application.port.in.RenewHolidaysUseCase;
-import toy.test.holidaymanager.holiday.application.port.in.RetrieveHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RemoveCountryHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RenewCountryHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RetrieveCountryHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
 import toy.test.holidaymanager.holiday.application.port.in.command.RenewCommand;
 import toy.test.holidaymanager.holiday.application.port.in.command.RetrieveFilterCommand;
@@ -22,9 +22,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/holidays")
 public class HolidayController {
-    private final RetrieveHolidaysUseCase retrieveHolidaysUseCase;
-    private final RemoveHolidaysUseCase removeHolidaysUseCase;
-    private final RenewHolidaysUseCase renewHolidaysUseCase;
+    private final RetrieveCountryHolidaysUseCase retrieveCountryHolidaysUseCase;
+    private final RemoveCountryHolidaysUseCase removeCountryHolidaysUseCase;
+    private final RenewCountryHolidaysUseCase renewCountryHolidaysUseCase;
 
     @GetMapping("/{year}/{countryCode}")
     public PageResponse<RetrievedHoliday> getHolidays(
@@ -35,7 +35,7 @@ public class HolidayController {
             @RequestParam(required = false) final List<String> types,
             @PageableDefault(size = 10) final Pageable pageable
     ) {
-        Page<Holiday> holidays = retrieveHolidaysUseCase.execute(
+        Page<Holiday> holidays = retrieveCountryHolidaysUseCase.execute(
                 RetrieveFilterCommand.from(year, countryCode, from, to, types),
                 pageable
         );
@@ -49,7 +49,7 @@ public class HolidayController {
             @PathVariable final int year,
             @PathVariable final String countryCode
     ) throws JsonProcessingException {
-        renewHolidaysUseCase.execute(RenewCommand.from(year, countryCode));
+        renewCountryHolidaysUseCase.execute(RenewCommand.from(year, countryCode));
     }
 
     @DeleteMapping("/{year}/{countryCode}")
@@ -57,6 +57,6 @@ public class HolidayController {
             @PathVariable final int year,
             @PathVariable final String countryCode
     ) {
-        removeHolidaysUseCase.execute(RemoveCommand.from(year, countryCode));
+        removeCountryHolidaysUseCase.execute(RemoveCommand.from(year, countryCode));
     }
 }

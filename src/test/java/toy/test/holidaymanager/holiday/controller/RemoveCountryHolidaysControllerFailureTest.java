@@ -13,13 +13,12 @@ import toy.test.holidaymanager.holiday.config.IntegrationTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @IntegrationTest
-public class RemoveHolidaysControllerTest {
+public class RemoveCountryHolidaysControllerFailureTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,18 +34,11 @@ public class RemoveHolidaysControllerTest {
 
     @Transactional
     @Test
-    public void 삭제_성공() throws Exception {
-        final int year = 2025;
+    public void 삭제_실패_데이터없음_오류() throws Exception {
+        final int year = 1000;
         final String countryCode = "KR";
 
-        final List<HolidayJpaEntity> expectedTotalElements = testData.stream()
-                .filter(it -> !(it.getDate().getYear() == year && it.getCountryCode().equals(countryCode)))
-                .toList();
-
         mockMvc.perform(delete("/api/holidays/" + year + "/" + countryCode))
-                .andExpect(status().isOk());
-
-        List<HolidayJpaEntity> saved = jpaRepository.findAll();
-        assertThat(saved).isEqualTo(expectedTotalElements);
+                .andExpect(status().isNotFound());
     }
 }

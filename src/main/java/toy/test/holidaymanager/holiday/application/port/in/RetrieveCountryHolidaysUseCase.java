@@ -5,6 +5,6 @@ import org.springframework.data.domain.Pageable;
 import toy.test.holidaymanager.holiday.application.port.in.command.RetrieveFilterCommand;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
 
-public interface RetrieveHolidaysUseCase {
+public interface RetrieveCountryHolidaysUseCase {
     Page<Holiday> execute(final RetrieveFilterCommand command, final Pageable pageable);
 }

@@ -13,12 +13,12 @@ import toy.test.holidaymanager.holiday.config.IntegrationTest;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @IntegrationTest
-public class RemoveHolidaysControllerFailureTest {
+public class RenewCountryHolidaysControllerFailureTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -34,11 +34,11 @@ public class RemoveHolidaysControllerFailureTest {
 
     @Transactional
     @Test
-    public void 삭제_실패_데이터없음_오류() throws Exception {
+    public void 재동기화_실패_요청정보_오류() throws Exception {
         final int year = 1000;
         final String countryCode = "KR";
 
-        mockMvc.perform(delete("/api/holidays/" + year + "/" + countryCode))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(post("/api/holidays/" + year + "/" + countryCode + "/refresh"))
+                .andExpect(status().isBadRequest());
     }
 }

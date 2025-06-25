@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.entity.HolidayJpaEntity;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.repository.HolidayJpaRepository;
-import toy.test.holidaymanager.holiday.application.port.in.RetrieveHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RetrieveCountryHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.command.RetrieveFilterCommand;
 import toy.test.holidaymanager.holiday.config.IntegrationTest;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 public class RetrieveCountryHolidaysTest {
     @Autowired
-    private RetrieveHolidaysUseCase useCase;
+    private RetrieveCountryHolidaysUseCase useCase;
 
     @Autowired
     private HolidayJpaRepository jpaRepository;

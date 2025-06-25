@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toy.test.holidaymanager.holiday.application.port.in.FetchHolidaysUseCase;
-import toy.test.holidaymanager.holiday.application.port.in.RenewHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.FetchCountryHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RenewCountryHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
 import toy.test.holidaymanager.holiday.application.port.in.command.RenewCommand;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
@@ -14,15 +14,15 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class RenewHolidaysService implements RenewHolidaysUseCase {
-    private final FetchHolidaysUseCase fetchHolidaysUseCase;
-    private final RemoveHolidaysService removeHolidaysService;
+public class RenewCountryHolidaysService implements RenewCountryHolidaysUseCase {
+    private final FetchCountryHolidaysUseCase fetchCountryHolidaysUseCase;
+    private final RemoveCountryHolidaysService removeHolidaysService;
     private final SaveHolidaysService saveHolidaysService;
 
     @Transactional
     @Override
     public void execute(final RenewCommand command) throws JsonProcessingException {
-        List<Holiday> data = fetchHolidaysUseCase.fetch(
+        List<Holiday> data = fetchCountryHolidaysUseCase.fetch(
                 command.year().value(),
                 command.countryCode().value()
         );

@@ -5,6 +5,6 @@ import toy.test.holidaymanager.holiday.domain.model.Holiday;
 
 import java.util.List;
 
-public interface FetchHolidaysUseCase {
+public interface FetchCountryHolidaysUseCase {
     List<Holiday> fetch(final int year, final String countryCode) throws JsonProcessingException;
 }

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.entity.HolidayJpaEntity;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.repository.HolidayJpaRepository;
-import toy.test.holidaymanager.holiday.application.port.in.RemoveHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RemoveCountryHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
 import toy.test.holidaymanager.holiday.config.IntegrationTest;
 
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 public class RemoveCountryHolidaysTest {
     @Autowired
-    private RemoveHolidaysUseCase useCase;
+    private RemoveCountryHolidaysUseCase useCase;
 
     @Autowired
     private HolidayJpaRepository jpaRepository;

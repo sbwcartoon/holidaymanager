@@ -7,7 +7,7 @@ import toy.test.holidaymanager.holiday.domain.vo.CountryCode;
 
 import java.util.List;
 
-public interface DateSourceRepository {
+public interface HolidaySourceRepository {
 
     List<Holiday> findByYearAndCountryCode(
             final HolidayYear year,

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @IntegrationTest
-public class RetrieveHolidaysControllerTest {
+public class RetrieveCountryHolidaysControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
