@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.entity.HolidayJpaEntity;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.repository.HolidayJpaRepository;
 import toy.test.holidaymanager.holiday.application.port.in.RemoveHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
 import toy.test.holidaymanager.holiday.config.IntegrationTest;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class RemoveCountryHolidaysTest {
                 .filter(it -> !(it.getDate().getYear() == 2025 && it.getCountryCode().equals("KR")))
                 .toList();
 
-        useCase.execute(2025, "KR");
+        useCase.execute(RemoveCommand.from(2025, "KR"));
 
         List<HolidayJpaEntity> saved = jpaRepository.findAll();
         assertThat(saved).isEqualTo(expectedTotalElements);

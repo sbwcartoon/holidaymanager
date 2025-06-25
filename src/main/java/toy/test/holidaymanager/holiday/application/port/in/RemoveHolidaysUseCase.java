@@ -1,5 +1,7 @@
 package toy.test.holidaymanager.holiday.application.port.in;
 
+import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
+
 public interface RemoveHolidaysUseCase {
-    void execute(final int year, final String countryCode);
+    void execute(final RemoveCommand command);
 }
