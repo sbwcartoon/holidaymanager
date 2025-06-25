@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JpaTest
 public class HolidayRepositoryTest {
     @Autowired
-    private HolidayJpaRepository repository;
+    private HolidayJpaRepository jpaRepository;
 
     @Transactional
     @Test
@@ -31,9 +31,9 @@ public class HolidayRepositoryTest {
                 .build();
         entity.addHolidayTypeCode(HolidayTypeCode.Public);
 
-        repository.saveAll(List.of(entity));
+        jpaRepository.saveAll(List.of(entity));
 
-        List<HolidayJpaEntity> saved = repository.findAll();
+        List<HolidayJpaEntity> saved = jpaRepository.findAll();
         assertThat(saved).size().isEqualTo(1);
         assertThat(saved.getFirst()).isEqualTo(entity);
     }
