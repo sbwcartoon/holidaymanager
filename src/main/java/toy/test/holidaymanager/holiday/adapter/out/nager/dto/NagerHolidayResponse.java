@@ -40,7 +40,7 @@ public class NagerHolidayResponse {
                 .build();
     }
 
-    private LocalDate convertToLocalDate(String date) {
+    private LocalDate convertToLocalDate(final String date) {
         final String[] dateParts = date.split("-");
         final int year = Integer.parseInt(dateParts[0]);
         final int month = Integer.parseInt(dateParts[1]);
