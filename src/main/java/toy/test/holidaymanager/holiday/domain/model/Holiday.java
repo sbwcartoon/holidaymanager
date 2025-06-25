@@ -5,7 +5,7 @@ import lombok.Getter;
 import toy.test.holidaymanager.holiday.domain.vo.*;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -18,6 +18,6 @@ public class Holiday {
     private HolidayName name;
     private Global global;
     private LaunchYear launchYear;
-    private List<HolidayCounty> counties;
-    private List<HolidayTypeCode> types;
+    private Set<HolidayCounty> counties;
+    private Set<HolidayTypeCode> types;
 }

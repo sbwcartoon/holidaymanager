@@ -11,6 +11,7 @@ import toy.test.holidaymanager.holiday.domain.vo.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
@@ -34,9 +35,9 @@ public class NagerHolidayResponse {
                 .name(new HolidayName(name))
                 .countryCode(new CountryCode(countryCode))
                 .global(new Global(global))
-                .counties(Objects.isNull(counties) ? null : counties.stream().map(HolidayCounty::new).toList())
+                .counties(Objects.isNull(counties) ? null : counties.stream().map(HolidayCounty::new).collect(Collectors.toSet()))
                 .launchYear(new LaunchYear(launchYear))
-                .types(types.stream().map(HolidayTypeCode::valueOf).toList())
+                .types(types.stream().map(HolidayTypeCode::valueOf).collect(Collectors.toSet()))
                 .build();
     }
 

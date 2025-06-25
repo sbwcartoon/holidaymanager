@@ -6,8 +6,8 @@ import toy.test.holidaymanager.holiday.domain.vo.HolidayId;
 import toy.test.holidaymanager.holiday.domain.vo.HolidayTypeCode;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -43,11 +43,11 @@ public class HolidayJpaEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "holiday", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HolidayCountyJpaEntity> counties = new ArrayList<>();
+    private Set<HolidayCountyJpaEntity> counties = new HashSet<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "holiday", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HolidayTypeJpaEntity> types = new ArrayList<>();
+    private Set<HolidayTypeJpaEntity> types = new HashSet<>();
 
     public void addHolidayCounty(final String holidayCounty) {
         counties.add(HolidayCountyJpaEntity.builder()

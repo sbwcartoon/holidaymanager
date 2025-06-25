@@ -6,6 +6,7 @@ import toy.test.holidaymanager.holiday.domain.model.Holiday;
 import toy.test.holidaymanager.holiday.domain.vo.*;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class HolidayJpaMapper {
 
@@ -35,9 +36,9 @@ public class HolidayJpaMapper {
                 .global(new Global(entity.isGlobal()))
                 .launchYear(new LaunchYear(entity.getLaunchYear()))
                 .counties(entity.getCounties().stream()
-                        .map(it -> new HolidayCounty(it.getCode())).toList())
+                        .map(it -> new HolidayCounty(it.getCode())).collect(Collectors.toSet()))
                 .types(entity.getTypes().stream()
-                        .map(HolidayTypeJpaEntity::getCode).toList())
+                        .map(HolidayTypeJpaEntity::getCode).collect(Collectors.toSet()))
                 .build();
     }
 }
