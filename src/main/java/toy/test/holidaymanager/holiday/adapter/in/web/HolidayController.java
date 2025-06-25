@@ -7,7 +7,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import toy.test.holidaymanager.holiday.adapter.in.dto.PageResponse;
 import toy.test.holidaymanager.holiday.adapter.in.dto.RetrievedHoliday;
+import toy.test.holidaymanager.holiday.application.port.in.RemoveHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.RetrieveHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
 import toy.test.holidaymanager.holiday.application.port.in.command.RetrieveFilterCommand;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/holidays")
 public class HolidayController {
     private final RetrieveHolidaysUseCase retrieveHolidaysUseCase;
+    private final RemoveHolidaysUseCase removeHolidaysUseCase;
 
     @GetMapping("/{year}/{countryCode}")
     public PageResponse<RetrievedHoliday> getHolidays(
@@ -35,5 +38,13 @@ public class HolidayController {
 
         Page<RetrievedHoliday> retrievedHolidays = holidays.map(RetrievedHoliday::from);
         return PageResponse.from(retrievedHolidays);
+    }
+
+    @DeleteMapping("/{year}/{countryCode}")
+    public void removeHolidays(
+            @PathVariable final int year,
+            @PathVariable final String countryCode
+    ) {
+        removeHolidaysUseCase.execute(RemoveCommand.from(year, countryCode));
     }
 }
