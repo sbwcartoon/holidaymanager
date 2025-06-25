@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
-import toy.test.holidaymanager.holiday.domain.vo.HolidayTypeCode;
+import toy.test.holidaymanager.holiday.domain.vo.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
@@ -29,12 +30,12 @@ public class NagerHolidayResponse {
     public Holiday toDomain() {
         return Holiday.builder()
                 .date(convertToLocalDate(date))
-                .localName(localName)
-                .name(name)
-                .countryCode(countryCode)
-                .global(global)
-                .counties(counties)
-                .launchYear(launchYear)
+                .localName(new HolidayLocalName(localName))
+                .name(new HolidayName(name))
+                .countryCode(new CountryCode(countryCode))
+                .global(new Global(global))
+                .counties(Objects.isNull(counties) ? null : counties.stream().map(HolidayCounty::new).toList())
+                .launchYear(new LaunchYear(launchYear))
                 .types(types.stream().map(HolidayTypeCode::valueOf).toList())
                 .build();
     }

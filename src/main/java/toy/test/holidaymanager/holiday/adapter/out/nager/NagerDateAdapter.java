@@ -7,6 +7,8 @@ import toy.test.holidaymanager.holiday.adapter.out.nager.client.NagerHolidayClie
 import toy.test.holidaymanager.holiday.adapter.out.nager.dto.NagerHolidayResponse;
 import toy.test.holidaymanager.holiday.application.port.out.DateSourceRepository;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
+import toy.test.holidaymanager.holiday.domain.vo.CountryCode;
+import toy.test.holidaymanager.holiday.domain.vo.HolidayYear;
 
 import java.util.List;
 
@@ -16,8 +18,11 @@ public class NagerDateAdapter implements DateSourceRepository {
     private final NagerHolidayClient nagerHolidayClient;
 
     @Override
-    public List<Holiday> findByYearAndCountryCode(final int year, final String countryCode) throws JsonProcessingException {
-        List<NagerHolidayResponse> holidays = nagerHolidayClient.fetch(year, countryCode);
+    public List<Holiday> findByYearAndCountryCode(
+            final HolidayYear year,
+            final CountryCode countryCode
+    ) throws JsonProcessingException {
+        List<NagerHolidayResponse> holidays = nagerHolidayClient.fetch(year.value(), countryCode.value());
         return holidays.stream().map(NagerHolidayResponse::toDomain).toList();
     }
 }

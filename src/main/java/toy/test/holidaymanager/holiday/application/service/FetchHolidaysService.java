@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import toy.test.holidaymanager.holiday.application.port.in.FetchHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.out.DateSourceRepository;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
+import toy.test.holidaymanager.holiday.domain.vo.CountryCode;
+import toy.test.holidaymanager.holiday.domain.vo.HolidayYear;
 
 import java.util.List;
 
@@ -16,6 +18,9 @@ public class FetchHolidaysService implements FetchHolidaysUseCase {
 
     @Override
     public List<Holiday> fetch(final int year, final String countryCode) throws JsonProcessingException {
-        return dateSourceRepository.findByYearAndCountryCode(year, countryCode);
+        return dateSourceRepository.findByYearAndCountryCode(
+                new HolidayYear(year),
+                new CountryCode(countryCode)
+        );
     }
 }

@@ -2,7 +2,7 @@ package toy.test.holidaymanager.holiday.domain.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import toy.test.holidaymanager.holiday.domain.vo.HolidayTypeCode;
+import toy.test.holidaymanager.holiday.domain.vo.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,12 +10,12 @@ import java.util.List;
 @Builder
 @Getter
 public class Holiday {
+    private CountryCode countryCode;
     private LocalDate date;
-    private String localName;
-    private String name;
-    private String countryCode;
-    private boolean global;
-    private List<String> counties;
-    private Integer launchYear;
+    private HolidayLocalName localName;
+    private HolidayName name;
+    private Global global;
+    private LaunchYear launchYear;
+    private List<HolidayCounty> counties;
     private List<HolidayTypeCode> types;
 }
