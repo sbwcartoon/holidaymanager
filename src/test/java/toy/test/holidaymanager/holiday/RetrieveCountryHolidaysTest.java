@@ -93,6 +93,18 @@ public class RetrieveCountryHolidaysTest {
         e3.addHolidayTypeCode(HolidayTypeCode.Public);
         e3.addHolidayTypeCode(HolidayTypeCode.Observance);
         testData.add(e3);
+
+        final HolidayJpaEntity e4 = HolidayJpaEntity.builder()
+                .countryCode("KR")
+                .date(LocalDate.of(2026, 5, 5))
+                .localName("어린이날")
+                .name("Children's Day")
+                .global(true)
+                .launchYear(null)
+                .build();
+        e4.addHolidayTypeCode(HolidayTypeCode.Public);
+        e4.addHolidayTypeCode(HolidayTypeCode.School);
+        testData.add(e4);
     }
 
     @BeforeEach
