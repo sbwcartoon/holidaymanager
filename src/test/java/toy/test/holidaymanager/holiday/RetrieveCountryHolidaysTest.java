@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.entity.HolidayJpaEntity;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.repository.HolidayJpaRepository;
 import toy.test.holidaymanager.holiday.application.port.in.RetrieveHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.command.RetrieveFilterCommand;
 import toy.test.holidaymanager.holiday.config.IntegrationTest;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
 import toy.test.holidaymanager.holiday.domain.vo.HolidayTypeCode;
@@ -105,8 +106,8 @@ public class RetrieveCountryHolidaysTest {
                 .filter(it -> it.getCountryCode().equals("KR"))
                 .toList();
 
-        Page<Holiday> result = useCase.execute(2025, "KR", null,
-                null, null, PageRequest.of(0, maxSize));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", null, null, null);
+        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -122,8 +123,8 @@ public class RetrieveCountryHolidaysTest {
                 .filter(it -> it.getDate().getMonthValue() >= 5)
                 .toList();
 
-        Page<Holiday> result = useCase.execute(2025, "KR", 5,
-                null, null, PageRequest.of(0, maxSize));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", 5, null, null);
+        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -139,8 +140,8 @@ public class RetrieveCountryHolidaysTest {
                 .filter(it -> it.getDate().getMonthValue() <= 3)
                 .toList();
 
-        Page<Holiday> result = useCase.execute(2025, "KR", null,
-                3, null, PageRequest.of(0, maxSize));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", null, 3, null);
+        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -157,8 +158,8 @@ public class RetrieveCountryHolidaysTest {
                 .filter(it -> it.getDate().getMonthValue() <= 5)
                 .toList();
 
-        Page<Holiday> result = useCase.execute(2025, "KR", 3,
-                5, null, PageRequest.of(0, maxSize));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", 3, 5, null);
+        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -176,8 +177,8 @@ public class RetrieveCountryHolidaysTest {
                         .anyMatch(it2 -> it2.getCode().equals(typeCode)))
                 .toList();
 
-        Page<Holiday> result = useCase.execute(2025, "KR", null, null,
-                List.of(typeCode.toString()), PageRequest.of(0, maxSize));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", null, null, List.of(typeCode.toString()));
+        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -197,8 +198,8 @@ public class RetrieveCountryHolidaysTest {
                         .anyMatch(it2 -> it2.getCode().equals(typeCode)))
                 .toList();
 
-        Page<Holiday> result = useCase.execute(2025, "KR", 3,
-                5, List.of(typeCode.toString()), PageRequest.of(0, maxSize));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", 3, 5, List.of(typeCode.toString()));
+        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
