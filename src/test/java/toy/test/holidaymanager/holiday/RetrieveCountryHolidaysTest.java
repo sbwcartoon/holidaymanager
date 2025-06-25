@@ -49,10 +49,11 @@ public class RetrieveCountryHolidaysTest {
                 .date(LocalDate.of(2025, 1, 30))
                 .localName("설날")
                 .name("Lunar New Year")
-                .global(true)
+                .global(false)
                 .launchYear(null)
                 .build();
         e0.addHolidayTypeCode(HolidayTypeCode.Public);
+        e0.addHolidayCounty("KR-11");
         testData.add(e0);
 
         final HolidayJpaEntity e1 = HolidayJpaEntity.builder()
@@ -60,11 +61,13 @@ public class RetrieveCountryHolidaysTest {
                 .date(LocalDate.of(2025, 3, 1))
                 .localName("3·1절")
                 .name("Independence Movement Day")
-                .global(true)
+                .global(false)
                 .launchYear(null)
                 .build();
         e1.addHolidayTypeCode(HolidayTypeCode.Public);
         e1.addHolidayTypeCode(HolidayTypeCode.School);
+        e1.addHolidayCounty("KR-11");
+        e1.addHolidayCounty("KR-12");
         testData.add(e1);
 
         final HolidayJpaEntity e2 = HolidayJpaEntity.builder()
@@ -88,7 +91,7 @@ public class RetrieveCountryHolidaysTest {
                 .launchYear(null)
                 .build();
         e3.addHolidayTypeCode(HolidayTypeCode.Public);
-        e3.addHolidayTypeCode(HolidayTypeCode.School);
+        e3.addHolidayTypeCode(HolidayTypeCode.Observance);
         testData.add(e3);
     }
 
@@ -168,16 +171,17 @@ public class RetrieveCountryHolidaysTest {
     @Transactional
     @Test
     public void 조회_types_성공() {
-        final HolidayTypeCode typeCode = HolidayTypeCode.School;
+        final List<HolidayTypeCode> typeCodes = List.of(HolidayTypeCode.School, HolidayTypeCode.Observance);
         final int maxSize = 1000;
         final List<HolidayJpaEntity> expectedTotalElements = testData.stream()
                 .filter(it -> it.getDate().getYear() == 2025)
                 .filter(it -> it.getCountryCode().equals("KR"))
                 .filter(it -> it.getTypes().stream()
-                        .anyMatch(it2 -> it2.getCode().equals(typeCode)))
+                        .anyMatch(it2 -> typeCodes.contains(it2.getCode())))
                 .toList();
 
-        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", null, null, List.of(typeCode.toString()));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(
+                2025, "KR", null, null, typeCodes.stream().map(HolidayTypeCode::name).toList());
         Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
@@ -187,7 +191,7 @@ public class RetrieveCountryHolidaysTest {
     @Transactional
     @Test
     public void 조회_모든_조건_성공() {
-        final HolidayTypeCode typeCode = HolidayTypeCode.School;
+        final List<HolidayTypeCode> typeCodes = List.of(HolidayTypeCode.School, HolidayTypeCode.Observance);
         final int maxSize = 2;
         final List<HolidayJpaEntity> expectedTotalElements = testData.stream()
                 .filter(it -> it.getDate().getYear() == 2025)
@@ -195,10 +199,11 @@ public class RetrieveCountryHolidaysTest {
                 .filter(it -> it.getDate().getMonthValue() >= 3)
                 .filter(it -> it.getDate().getMonthValue() <= 5)
                 .filter(it -> it.getTypes().stream()
-                        .anyMatch(it2 -> it2.getCode().equals(typeCode)))
+                        .anyMatch(it2 -> typeCodes.contains(it2.getCode())))
                 .toList();
 
-        final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", 3, 5, List.of(typeCode.toString()));
+        final RetrieveFilterCommand command = RetrieveFilterCommand.from(
+                2025, "KR", 3, 5, typeCodes.stream().map(HolidayTypeCode::name).toList());
         Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());

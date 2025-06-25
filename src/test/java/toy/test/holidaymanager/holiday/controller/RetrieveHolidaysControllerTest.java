@@ -56,10 +56,11 @@ public class RetrieveHolidaysControllerTest {
                 .date(LocalDate.of(2025, 1, 30))
                 .localName("설날")
                 .name("Lunar New Year")
-                .global(true)
+                .global(false)
                 .launchYear(null)
                 .build();
         e0.addHolidayTypeCode(HolidayTypeCode.Public);
+        e0.addHolidayCounty("KR-11");
         testData.add(e0);
 
         final HolidayJpaEntity e1 = HolidayJpaEntity.builder()
@@ -67,11 +68,13 @@ public class RetrieveHolidaysControllerTest {
                 .date(LocalDate.of(2025, 3, 1))
                 .localName("3·1절")
                 .name("Independence Movement Day")
-                .global(true)
+                .global(false)
                 .launchYear(null)
                 .build();
         e1.addHolidayTypeCode(HolidayTypeCode.Public);
         e1.addHolidayTypeCode(HolidayTypeCode.School);
+        e1.addHolidayCounty("KR-11");
+        e1.addHolidayCounty("KR-12");
         testData.add(e1);
 
         final HolidayJpaEntity e2 = HolidayJpaEntity.builder()
@@ -95,7 +98,7 @@ public class RetrieveHolidaysControllerTest {
                 .launchYear(null)
                 .build();
         e3.addHolidayTypeCode(HolidayTypeCode.Public);
-        e3.addHolidayTypeCode(HolidayTypeCode.School);
+        e3.addHolidayTypeCode(HolidayTypeCode.Observance);
         testData.add(e3);
     }
 
@@ -229,13 +232,13 @@ public class RetrieveHolidaysControllerTest {
         final String countryCode = "KR";
         final int pageOneBased = 1;
         final int maxSize = 10;
-        final HolidayTypeCode typeCode = HolidayTypeCode.School;
+        final List<HolidayTypeCode> typeCodes = List.of(HolidayTypeCode.School, HolidayTypeCode.Observance);
 
         final List<RetrievedHoliday> expectedContentTotal = testData.stream()
                 .filter(it -> it.getDate().getYear() == year)
                 .filter(it -> it.getCountryCode().equals(countryCode))
                 .filter(it -> it.getTypes().stream()
-                        .anyMatch(it2 -> it2.getCode().equals(typeCode)))
+                        .anyMatch(it2 -> typeCodes.contains(it2.getCode())))
                 .map(HolidayJpaMapper::toDomain)
                 .map(RetrievedHoliday::from)
                 .toList();
@@ -247,7 +250,9 @@ public class RetrieveHolidaysControllerTest {
 
         mockMvc.perform(get("/api/holidays/" + year + "/" + countryCode)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("types", typeCode.name()))
+                        .param("types", typeCodes.stream()
+                                .map(HolidayTypeCode::name)
+                                .toArray(String[]::new)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(response)));
     }
@@ -261,7 +266,7 @@ public class RetrieveHolidaysControllerTest {
         final int maxSize = 10;
         final Integer from = 3;
         final Integer to = 5;
-        final HolidayTypeCode typeCode = HolidayTypeCode.School;
+        final List<HolidayTypeCode> typeCodes = List.of(HolidayTypeCode.School, HolidayTypeCode.Observance);
 
         final List<RetrievedHoliday> expectedContentTotal = testData.stream()
                 .filter(it -> it.getDate().getYear() == year)
@@ -269,7 +274,7 @@ public class RetrieveHolidaysControllerTest {
                 .filter(it -> it.getDate().getMonthValue() >= from)
                 .filter(it -> it.getDate().getMonthValue() <= to)
                 .filter(it -> it.getTypes().stream()
-                        .anyMatch(it2 -> it2.getCode().equals(typeCode)))
+                        .anyMatch(it2 -> typeCodes.contains(it2.getCode())))
                 .map(HolidayJpaMapper::toDomain)
                 .map(RetrievedHoliday::from)
                 .toList();
@@ -285,7 +290,9 @@ public class RetrieveHolidaysControllerTest {
                         .param("size", String.valueOf(maxSize))
                         .param("from", String.valueOf(from))
                         .param("to", String.valueOf(to))
-                        .param("types", typeCode.name()))
+                        .param("types", typeCodes.stream()
+                                .map(HolidayTypeCode::name)
+                                .toArray(String[]::new)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(response)));
     }
