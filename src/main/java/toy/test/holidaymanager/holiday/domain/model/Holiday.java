@@ -1,12 +1,14 @@
 package toy.test.holidaymanager.holiday.domain.model;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import toy.test.holidaymanager.holiday.domain.vo.*;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@EqualsAndHashCode
 @Builder
 @Getter
 public class Holiday {
