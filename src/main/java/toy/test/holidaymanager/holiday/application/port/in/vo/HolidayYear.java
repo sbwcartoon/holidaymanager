@@ -1,4 +1,4 @@
-package toy.test.holidaymanager.holiday.domain.vo;
+package toy.test.holidaymanager.holiday.application.port.in.vo;
 
 import jakarta.annotation.Nonnull;
 
