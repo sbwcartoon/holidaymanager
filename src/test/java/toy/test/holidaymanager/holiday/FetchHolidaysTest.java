@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import toy.test.holidaymanager.holiday.adapter.out.nager.NagerDateAdapter;
 import toy.test.holidaymanager.holiday.adapter.out.nager.client.NagerHolidayClient;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerFetchIllegalArgumentException;
 import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerHolidayFetchException;
 import toy.test.holidaymanager.holiday.application.port.in.FetchHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.out.DateSourceRepository;
@@ -31,7 +32,7 @@ public class FetchHolidaysTest {
     public void 공휴일_fetch_실패_오류연도_조회() {
         final int errorYear = -1000;
         assertThatThrownBy(() -> fetchHolidaysUseCase.fetch(errorYear, "KR"))
-                .isInstanceOf(NagerHolidayFetchException.class);
+                .isInstanceOf(NagerFetchIllegalArgumentException.class);
     }
 
     @Test

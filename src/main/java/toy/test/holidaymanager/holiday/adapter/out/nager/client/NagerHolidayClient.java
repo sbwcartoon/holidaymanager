@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import toy.test.holidaymanager.holiday.adapter.out.nager.dto.NagerHolidayResponse;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerFetchIllegalArgumentException;
 import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerHolidayFetchException;
 
 import java.io.IOException;
@@ -23,10 +24,7 @@ public class NagerHolidayClient {
 
     public List<NagerHolidayResponse> fetch(final int year, final String countryCode) throws JsonProcessingException {
         final HttpResponse<String> response = getResponse(year, countryCode);
-
-        if (response.statusCode() != HttpStatus.OK.value()) {
-            throw new NagerHolidayFetchException();
-        }
+        throwIfNotOk(response.statusCode());
 
         return objectMapper.readValue(response.body(), new TypeReference<>() {
         });
@@ -42,6 +40,15 @@ public class NagerHolidayClient {
             return client.send(request, HttpResponse.BodyHandlers.ofString());
 
         } catch (IOException | InterruptedException e) {
+            throw new NagerHolidayFetchException();
+        }
+    }
+
+    private void throwIfNotOk(int statusCode) {
+        if (statusCode != HttpStatus.OK.value()) {
+            if (statusCode == HttpStatus.BAD_REQUEST.value()) {
+                throw new NagerFetchIllegalArgumentException();
+            }
             throw new NagerHolidayFetchException();
         }
     }
