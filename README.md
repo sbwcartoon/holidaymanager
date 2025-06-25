@@ -41,13 +41,13 @@ http://localhost:{PORT}/swagger-ui/index.html
             - isFirst: 첫 페이지인지 여부
             - isLast: 마지막 페이지인지 여부
             - content: 조회된 데이터 목록(object list). date 오름차순 정렬됨
+                - countryCode: 국가 코드(ISO 3166-1 alpha-2)
                 - date: 날짜(yyyy-MM-dd)
                 - localName: 공휴일 이름(해당 국가 언어 표기)
                 - name: 공휴일 이름(영문 표기)
-                - countryCode: 국가 코드(ISO 3166-1 alpha-2)
                 - global: 국가 전체 휴일 여부(boolean)
-                - counties: 적용되는 state code(ISO 3166-2 또는 null. null일 경우 국가 전체에 적용됨)
                 - launchYear: 최초 적용 연도(yyyy 또는 null)
+                - counties: 적용되는 state code list(ISO 3166-2 list. 빈 배열일 경우 국가 전체에 적용됨)
                 - types: 공휴일 유형(string list)
                     - Public: 법정 공휴일
                     - Bank: 은행 휴업일
@@ -65,31 +65,31 @@ http://localhost:{PORT}/swagger-ui/index.html
               "isFirst": true,
               "isLast": false,
               "content": [{
+                "countryCode": "KR",
                 "date": "2025-10-03",
                 "localName": "개천절",
                 "name": "National Foundation Day",
-                "countryCode": "KR",
                 "global": true,
-                "counties": null,
                 "launchYear": null,
+                "counties": [],
                 "types": ["Public"]
               }, {
+                "countryCode": "KR",
                 "date": "2025-10-06",
                 "localName": "추석",
                 "name": "Chuseok",
-                "countryCode": "KR",
                 "global": true,
-                "counties": null,
                 "launchYear": null,
+                "counties": [],
                 "types": ["Public"]
               }, {
+                "countryCode": "KR",
                 "date": "2025-10-07",
                 "localName": "추석",
                 "name": "Chuseok",
-                "countryCode": "KR",
                 "global": true,
-                "counties": null,
                 "launchYear": null,
+                "counties": [],
                 "types": ["Public"]
               }]
             }
