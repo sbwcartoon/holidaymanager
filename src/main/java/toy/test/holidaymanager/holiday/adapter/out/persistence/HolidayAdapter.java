@@ -53,4 +53,9 @@ public class HolidayAdapter implements HolidayRepository {
 
         holidayJpaRepository.deleteAll(entities);
     }
+
+    @Override
+    public long count() {
+        return holidayJpaRepository.count();
+    }
 }

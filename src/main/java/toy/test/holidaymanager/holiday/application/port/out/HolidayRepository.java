@@ -14,4 +14,6 @@ public interface HolidayRepository {
     Page<Holiday> findAllByCondition(final RetrieveFilterCommand command, final Pageable pageable);
 
     void deleteAllByCondition(final RemoveCommand command);
+
+    long count();
 }
