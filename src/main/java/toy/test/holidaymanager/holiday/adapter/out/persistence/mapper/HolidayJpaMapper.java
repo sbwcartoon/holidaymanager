@@ -5,6 +5,7 @@ import toy.test.holidaymanager.holiday.adapter.out.persistence.entity.HolidayTyp
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
 import toy.test.holidaymanager.holiday.domain.vo.*;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class HolidayJpaMapper {
                 .localName(holiday.getLocalName().value())
                 .name(holiday.getName().value())
                 .global(holiday.getGlobal().value())
-                .launchYear(holiday.getLaunchYear().value())
+                .launchYear(Objects.isNull(holiday.getLaunchYear()) ? null : holiday.getLaunchYear().value())
                 .build();
         holiday.getCounties().forEach(it -> entity.addHolidayCounty(it.value()));
         holiday.getTypes().forEach(entity::addHolidayTypeCode);
@@ -34,7 +35,7 @@ public class HolidayJpaMapper {
                 .localName(new HolidayLocalName(entity.getLocalName()))
                 .name(new HolidayName(entity.getName()))
                 .global(new Global(entity.isGlobal()))
-                .launchYear(new LaunchYear(entity.getLaunchYear()))
+                .launchYear(Objects.isNull(entity.getLaunchYear()) ? null : new LaunchYear(entity.getLaunchYear()))
                 .counties(entity.getCounties().stream()
                         .map(it -> new HolidayCounty(it.getCode())).collect(Collectors.toSet()))
                 .types(entity.getTypes().stream()
