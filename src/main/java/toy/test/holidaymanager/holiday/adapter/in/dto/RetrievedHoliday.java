@@ -13,6 +13,7 @@ public record RetrievedHoliday(
         String localName,
         String name,
         boolean global,
+        Integer launchYear,
         List<String> counties,
         List<String> types
 ) {
@@ -23,6 +24,7 @@ public record RetrievedHoliday(
                 holiday.getLocalName().value(),
                 holiday.getName().value(),
                 holiday.getGlobal().value(),
+                Objects.isNull(holiday.getLaunchYear()) ? null : holiday.getLaunchYear().value(),
                 Objects.isNull(holiday.getCounties()) ? null : holiday.getCounties().stream()
                         .map(HolidayCounty::value).toList(),
                 holiday.getTypes().stream().map(Enum::name).toList()

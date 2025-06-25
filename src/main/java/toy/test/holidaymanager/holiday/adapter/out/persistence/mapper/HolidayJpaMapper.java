@@ -21,7 +21,9 @@ public class HolidayJpaMapper {
                 .global(holiday.getGlobal().value())
                 .launchYear(Objects.isNull(holiday.getLaunchYear()) ? null : holiday.getLaunchYear().value())
                 .build();
-        holiday.getCounties().forEach(it -> entity.addHolidayCounty(it.value()));
+        if (Objects.nonNull(holiday.getCounties())) {
+            holiday.getCounties().forEach(it -> entity.addHolidayCounty(it.value()));
+        }
         holiday.getTypes().forEach(entity::addHolidayTypeCode);
 
         return entity;
@@ -36,10 +38,9 @@ public class HolidayJpaMapper {
                 .name(new HolidayName(entity.getName()))
                 .global(new Global(entity.isGlobal()))
                 .launchYear(Objects.isNull(entity.getLaunchYear()) ? null : new LaunchYear(entity.getLaunchYear()))
-                .counties(entity.getCounties().stream()
+                .counties(Objects.isNull(entity.getCounties()) ? null : entity.getCounties().stream()
                         .map(it -> new HolidayCounty(it.getCode())).collect(Collectors.toSet()))
-                .types(entity.getTypes().stream()
-                        .map(HolidayTypeJpaEntity::getCode).collect(Collectors.toSet()))
+                .types(entity.getTypes().stream().map(HolidayTypeJpaEntity::getCode).collect(Collectors.toSet()))
                 .build();
     }
 }

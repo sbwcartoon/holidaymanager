@@ -9,6 +9,7 @@ import toy.test.holidaymanager.holiday.domain.model.Holiday;
 import toy.test.holidaymanager.holiday.domain.vo.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,13 +31,13 @@ public class NagerHolidayResponse {
 
     public Holiday toDomain() {
         return Holiday.builder()
+                .countryCode(new CountryCode(countryCode))
                 .date(convertToLocalDate(date))
                 .localName(new HolidayLocalName(localName))
                 .name(new HolidayName(name))
-                .countryCode(new CountryCode(countryCode))
                 .global(new Global(global))
-                .counties(Objects.isNull(counties) ? null : counties.stream().map(HolidayCounty::new).collect(Collectors.toSet()))
-                .launchYear(new LaunchYear(launchYear))
+                .launchYear(Objects.isNull(launchYear) ? null : new LaunchYear(launchYear))
+                .counties(Objects.isNull(counties) ? Collections.emptySet() : counties.stream().map(HolidayCounty::new).collect(Collectors.toSet()))
                 .types(types.stream().map(HolidayTypeCode::valueOf).collect(Collectors.toSet()))
                 .build();
     }
