@@ -10,6 +10,8 @@ import java.util.List;
 @Builder
 @Getter
 public class Holiday {
+    @Builder.Default
+    private HolidayId id = HolidayId.generate();
     private CountryCode countryCode;
     private LocalDate date;
     private HolidayLocalName localName;
