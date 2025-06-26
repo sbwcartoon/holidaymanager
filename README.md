@@ -1,6 +1,56 @@
 # 전 세계 공휴일 관리
 - nager.date 참조하여 공휴일 관리(https://date.nager.at)
 
+## 설치 방법
+### 설치 전 준비
+- 설치 환경: linux
+- 운영 환경: jdk 21
+- 설치 파일 구성
+    - docker-compose.yml: docker compose 설정 파일
+    - Dockerfile: docker 이미지 설정 파일
+    - start.sh: 전체 설치 과정이 정의된 파일(이 파일만 실행하면 설치 및 구동함)
+- 사전 준비(준비된 경우 아래 설치로)
+    - docker 및 docker compose 설치
+        - docker 설치 참조: https://docs.docker.com/engine/install
+        - docker compose 설치 참조: https://docs.docker.com/compose/install
+
+### 설치
+```shell
+$ sh start.sh
+```
+- 본 시스템은 포트 8080번을 사용하는데, 만약 포트 8080번이 이미 사용 중일 경우, 본 소스의 docker-compose.yml 파일 변경 후 다시 시도
+    - app 서비스 ports 항목의 "8080:8080" 중 앞 숫자를 바꾸고 싶은 포트로 변경한 후 다시 시도(ex. 8000으로 변경할 경우 "8000:8080")
+
+### 설치 완료 확인
+- 아래 명령어를 실행하여 구동중인 컨테이너에 holidaymanager가 있으면 설치 완료됨
+```shell
+$ docker ps --filter "name=holidaymanager"
+```
+- 다만 상기 명령어는 컨테이너가 설치된 것을 의미하며 이후 구동까지는 시간이 더 걸릴 수 있음
+
+### 설치 실패 대응법
+- Error response from daemon: driver failed... port is already in use
+    - 설치하려는 port가 이미 사용중임. 상기 설치의 포트 변경 방법을 참고하여 다시 설치
+
+### 테스트
+- 브라우저의 주소창에 설치한 호스트 주소(아래 예시의 api-host 부분) 및 포트(아래 예시는 기본값인 8080번을 사용. 상기 설치 과정에서 변경한 경우는 변경한 번호를 사용해야 함), 사용할 api(GET만 가능) 주소를 입력하여 테스트
+```
+### 공휴일 조회 api 테스트
+http://api-host:8080/api/holidays/2025/KR
+```
+
+### 수동 빌드 & 실행
+- 상기 docker 방식 외 아래와 같이 gradle을 통해 수동 실행 가능(8080 포트로 실행됨)
+```shell
+$ ./gradlew bootRun
+```
+
+- gradle 테스트: 테스트 코드를 일괄 테스트(아래는 결과 스크린샷)
+```shell
+$ ./gradlew clean test
+```
+![img.png](test_succeed_img.png)
+
 ## 문서화
 - 아래 주소로 swagger 문서 페이지로 접근 가능
 ```text
