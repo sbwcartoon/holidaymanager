@@ -1,14 +1,11 @@
 package toy.test.holidaymanager.holiday.application.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toy.test.holidaymanager.holiday.application.port.in.FetchCountryHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.FetchGlobalHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.SaveRecentGlobalHolidaysUseCase;
-import toy.test.holidaymanager.holiday.application.port.out.CountrySourceRepository;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
-import toy.test.holidaymanager.holiday.domain.vo.CountryCode;
 
 import java.time.Year;
 import java.util.List;
@@ -17,20 +14,16 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @Service
 public class SaveRecentGlobalHolidaysService implements SaveRecentGlobalHolidaysUseCase {
-    private final FetchCountryHolidaysUseCase fetchCountryHolidaysUseCase;
     private final SaveHolidaysService saveHolidaysService;
-    private final CountrySourceRepository repository;
+    private final FetchGlobalHolidaysUseCase fetchGlobalHolidaysUseCase;
 
     @Transactional
     @Override
-    public void execute() throws JsonProcessingException {
-        List<CountryCode> countryCodes = repository.findAll();
+    public void execute() {
         List<Integer> years = getRecent5Years();
         for (int year : years) {
-            for (CountryCode countryCode : countryCodes) {
-                List<Holiday> data = fetchCountryHolidaysUseCase.fetch(year, countryCode.value());
-                saveHolidaysService.execute(data);
-            }
+            List<Holiday> data = fetchGlobalHolidaysUseCase.fetch(year);
+            saveHolidaysService.execute(data);
         }
     }
 

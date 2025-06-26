@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.application.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import toy.test.holidaymanager.holiday.application.port.in.InitGlobalHolidaysUseCase;
@@ -14,7 +13,7 @@ public class InitGlobalHolidaysService implements InitGlobalHolidaysUseCase {
     private final SaveRecentGlobalHolidaysUseCase useCase;
 
     @Override
-    public void execute() throws JsonProcessingException {
+    public void execute() {
         if (isInitialized()) {
             return;
         }

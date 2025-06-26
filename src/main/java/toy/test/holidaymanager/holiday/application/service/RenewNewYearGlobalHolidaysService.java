@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.application.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,7 @@ public class RenewNewYearGlobalHolidaysService implements RenewNewYearGlobalHoli
 
     @Transactional
     @Override
-    public void execute() throws JsonProcessingException {
+    public void execute() {
         List<Integer> years = getRecent2Years();
         for (int year : years) {
             renewGlobalHolidaysUseCase.execute(year);

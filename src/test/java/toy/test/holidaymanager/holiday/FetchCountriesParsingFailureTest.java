@@ -1,38 +1,33 @@
 package toy.test.holidaymanager.holiday;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Test;
-import toy.test.holidaymanager.holiday.adapter.out.nager.NagerCountryAdapter;
+import org.springframework.web.reactive.function.client.WebClient;
 import toy.test.holidaymanager.holiday.adapter.out.nager.client.NagerCountryClient;
-import toy.test.holidaymanager.holiday.application.port.in.FetchCountriesUseCase;
-import toy.test.holidaymanager.holiday.application.port.out.CountrySourceRepository;
-import toy.test.holidaymanager.holiday.application.service.FetchCountriesService;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerServerException;
 
-import java.net.http.HttpResponse;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
 
 public class FetchCountriesParsingFailureTest {
-    private final NagerCountryClient client = new NagerCountryClient(new ObjectMapper());
-    private final NagerCountryClient spyClient = spy(client);
-    private final CountrySourceRepository repository = new NagerCountryAdapter(spyClient);
-    private final FetchCountriesUseCase fetchCountriesUseCase = new FetchCountriesService(repository);
 
     @Test
-    public void 국가코드_fetch_실패_데이터구조변경됨() {
-        HttpResponse<String> spyResponse = mockHttpResponse();
-        when(spyResponse.statusCode()).thenReturn(200);
-        when(spyResponse.body()).thenReturn("구조변경된_데이터");
-        when(spyClient.getResponse()).thenReturn(spyResponse);
+    public void 국가코드_fetch_실패_데이터구조변경됨() throws IOException {
+        try (MockWebServer server = new MockWebServer()) {
+            server.enqueue(new MockResponse()
+                    .setResponseCode(200)
+                    .addHeader("Content-Type", "application/json")
+                    .setBody("파싱_불가_구조"));
 
-        assertThatThrownBy(fetchCountriesUseCase::fetch)
-                .isInstanceOf(JsonParseException.class);
-    }
+            final WebClient webClient = WebClient.builder()
+                    .baseUrl(server.url("/").toString())
+                    .build();
+            final NagerCountryClient client = new NagerCountryClient(webClient);
 
-    @SuppressWarnings("unchecked")
-    private HttpResponse<String> mockHttpResponse() {
-        return (HttpResponse<String>) mock(HttpResponse.class);
+            assertThatThrownBy(client::fetchAll)
+                    .isInstanceOf(NagerServerException.class);
+        }
     }
 }

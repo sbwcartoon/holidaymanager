@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.adapter.in.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +47,7 @@ public class HolidayController {
     public void renewHolidays(
             @PathVariable final int year,
             @PathVariable final String countryCode
-    ) throws JsonProcessingException {
+    ) {
         renewCountryHolidaysUseCase.execute(RenewCommand.from(year, countryCode));
     }
 

@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.application.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,7 @@ public class RenewGlobalHolidaysService implements RenewGlobalHolidaysUseCase {
 
     @Transactional
     @Override
-    public void execute(final int year) throws JsonProcessingException {
+    public void execute(final int year) {
         List<CountryCode> countryCodes = repository.findAll();
         for (CountryCode countryCode : countryCodes) {
             renewCountryHolidaysUseCase.execute(RenewCommand.from(year, countryCode.value()));

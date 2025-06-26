@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class RenewCountryHolidaysTest {
 
     @Transactional
     @Test
-    public void 재동기화_성공() throws JsonProcessingException {
+    public void 재동기화_성공() {
         final HolidayJpaEntity first = testData.getFirst();
         final int year = first.getDate().getYear();
         final String countryCode = first.getCountryCode();

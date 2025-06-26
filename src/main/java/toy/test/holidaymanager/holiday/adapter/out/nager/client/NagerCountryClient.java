@@ -1,51 +1,69 @@
 package toy.test.holidaymanager.holiday.adapter.out.nager.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import toy.test.holidaymanager.holiday.adapter.out.nager.dto.NagerCountryResponse;
-import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerHolidayFetchException;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerClientException;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerServerException;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-@RequiredArgsConstructor
 @Component
 public class NagerCountryClient {
-    private final ObjectMapper objectMapper;
+    private final WebClient webClient;
 
-    public List<NagerCountryResponse> fetch() throws JsonProcessingException {
-        final HttpResponse<String> response = getResponse();
-        throwIfNotOk(response.statusCode());
-
-        return objectMapper.readValue(response.body(), new TypeReference<>() {
-        });
+    public NagerCountryClient(@Qualifier("nagerWebClient") WebClient webClient) {
+        this.webClient = webClient;
     }
 
-    public HttpResponse<String> getResponse() {
-        try (final HttpClient client = HttpClient.newHttpClient()) {
-            final HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://date.nager.at/api/v3/AvailableCountries"))
-                    .GET()
-                    .build();
+    public CompletableFuture<List<NagerCountryResponse>> fetchAsync() {
+        return webClient.get()
+                .uri("/AvailableCountries")
+                .retrieve()
+                .onStatus(
+                        HttpStatusCode::is4xxClientError,
+                        response -> response.bodyToMono(String.class)
+                                .map(NagerClientException::new)
+                )
+                .onStatus(
+                        status -> status.is5xxServerError() || status.value() >= 300,
+                        response -> response.bodyToMono(String.class)
+                                .map(NagerServerException::new)
+                )
+                .bodyToMono(new ParameterizedTypeReference<List<NagerCountryResponse>>() {
+                })
+                .onErrorMap(e ->
+                                !(e instanceof NagerClientException) && !(e instanceof NagerServerException),
+                        ex -> new NagerServerException("Unknown Error", ex)
+                )
+                .toFuture();
+    }
 
-            return client.send(request, HttpResponse.BodyHandlers.ofString());
+    public List<NagerCountryResponse> fetchAll() {
+        final List<NagerCountryResponse> result = fetchAllOriginal();
+        return getSorted(result);
+    }
 
-        } catch (IOException | InterruptedException e) {
-            throw new NagerHolidayFetchException();
+    public List<NagerCountryResponse> fetchAllOriginal() {
+        try {
+            return fetchAsync().get();
+        } catch (InterruptedException | ExecutionException e) {
+            if (e.getCause() instanceof NagerClientException cause) {
+                throw cause;
+            }
+            throw new NagerServerException("Error while fetching country codes", e.getCause());
         }
     }
 
-    private void throwIfNotOk(int statusCode) {
-        if (statusCode != HttpStatus.OK.value()) {
-            throw new NagerHolidayFetchException();
-        }
+    private List<NagerCountryResponse> getSorted(final List<NagerCountryResponse> original) {
+        return original.stream()
+                .sorted(Comparator.comparing(NagerCountryResponse::getCountryCode))
+                .toList();
     }
 }

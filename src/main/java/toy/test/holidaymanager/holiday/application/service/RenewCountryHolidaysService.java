@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.application.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,7 @@ public class RenewCountryHolidaysService implements RenewCountryHolidaysUseCase 
 
     @Transactional
     @Override
-    public void execute(final RenewCommand command) throws JsonProcessingException {
+    public void execute(final RenewCommand command) {
         List<Holiday> data = fetchCountryHolidaysUseCase.fetch(
                 command.year().value(),
                 command.countryCode().value()

@@ -4,6 +4,6 @@ import toy.test.holidaymanager.holiday.domain.model.Holiday;
 
 import java.util.List;
 
-public interface FetchCountryHolidaysUseCase {
-    List<Holiday> fetch(final int year, final String countryCode);
+public interface FetchGlobalHolidaysUseCase {
+    List<Holiday> fetch(final int year);
 }

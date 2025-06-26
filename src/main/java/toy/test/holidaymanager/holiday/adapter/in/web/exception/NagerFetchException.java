@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerFetchIllegalArgumentException;
-import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerHolidayFetchException;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerClientException;
+import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerServerException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ import toy.test.holidaymanager.holiday.adapter.out.nager.exception.NagerHolidayF
 public class NagerFetchException {
     private final HttpServletRequest request;
 
-    @ExceptionHandler(NagerFetchIllegalArgumentException.class)
+    @ExceptionHandler(NagerClientException.class)
     public ResponseEntity<ApiErrorResponse> handleFetchIllegalArgumentException(final Exception e) {
         return ApiErrorResponse.build(
                 HttpStatus.BAD_REQUEST,
@@ -26,7 +26,7 @@ public class NagerFetchException {
         );
     }
 
-    @ExceptionHandler(NagerHolidayFetchException.class)
+    @ExceptionHandler(NagerServerException.class)
     public ResponseEntity<ApiErrorResponse> handleFetchException(final Exception e) {
         return ApiErrorResponse.build(
                 HttpStatus.INTERNAL_SERVER_ERROR,

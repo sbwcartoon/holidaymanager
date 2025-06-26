@@ -1,6 +1,6 @@
 package toy.test.holidaymanager.holiday.adapter.out.nager.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,19 +14,33 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class NagerHolidayResponse {
+    @JsonProperty(required = true)
     private String date;
+
+    @JsonProperty(required = true)
     private String localName;
+
+    @JsonProperty(required = true)
     private String name;
+
+    @JsonProperty(required = true)
     private String countryCode;
+
+    @JsonProperty(required = true)
     private boolean global;
+
+    @JsonProperty(required = true)
     private List<String> counties;
+
+    @JsonProperty(required = true)
     private Integer launchYear;
+
+    @JsonProperty(required = true)
     private List<String> types;
 
     public Holiday toDomain() {

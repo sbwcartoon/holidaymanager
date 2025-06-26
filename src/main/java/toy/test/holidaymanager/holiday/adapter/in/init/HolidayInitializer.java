@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.adapter.in.init;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
@@ -15,7 +14,7 @@ public class HolidayInitializer {
     private final InitGlobalHolidaysUseCase useCase;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initialize() throws JsonProcessingException {
+    public void initialize() {
         useCase.execute();
     }
 }

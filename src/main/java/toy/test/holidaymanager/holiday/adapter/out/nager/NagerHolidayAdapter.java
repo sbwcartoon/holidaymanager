@@ -1,6 +1,5 @@
 package toy.test.holidaymanager.holiday.adapter.out.nager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import toy.test.holidaymanager.holiday.adapter.out.nager.client.NagerHolidayClient;
@@ -21,8 +20,23 @@ public class NagerHolidayAdapter implements HolidaySourceRepository {
     public List<Holiday> findByYearAndCountryCode(
             final HolidayYear year,
             final CountryCode countryCode
-    ) throws JsonProcessingException {
-        List<NagerHolidayResponse> holidays = nagerHolidayClient.fetch(year.value(), countryCode.value());
+    ) {
+        final List<NagerHolidayResponse> holidays = nagerHolidayClient.fetchAll(
+                List.of(year.value()),
+                List.of(countryCode.value())
+        );
+        return holidays.stream().map(NagerHolidayResponse::toDomain).toList();
+    }
+
+    @Override
+    public List<Holiday> findByYearAndCountryCodes(
+            final HolidayYear year,
+            final List<CountryCode> countryCode
+    ) {
+        final List<NagerHolidayResponse> holidays = nagerHolidayClient.fetchAll(
+                List.of(year.value()),
+                countryCode.stream().map(CountryCode::value).toList()
+        );
         return holidays.stream().map(NagerHolidayResponse::toDomain).toList();
     }
 }
