@@ -78,7 +78,7 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity).fetchJoin()
                 .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity).fetchJoin()
                 .where(
-                        holidayJpaEntity.countryCode.eq(countryCode),
+                        Objects.isNull(countryCode) ? null : holidayJpaEntity.countryCode.eq(countryCode),
                         holidayJpaEntity.date.year().eq(year)
                 )
                 .orderBy(holidayJpaEntity.date.asc())

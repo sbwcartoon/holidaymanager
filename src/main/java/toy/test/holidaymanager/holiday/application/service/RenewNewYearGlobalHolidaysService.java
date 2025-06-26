@@ -3,8 +3,10 @@ package toy.test.holidaymanager.holiday.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toy.test.holidaymanager.holiday.application.port.in.RenewGlobalHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.FetchGlobalHolidaysUseCase;
+import toy.test.holidaymanager.holiday.application.port.in.RemoveGlobalHolidaysUseCase;
 import toy.test.holidaymanager.holiday.application.port.in.RenewNewYearGlobalHolidaysUseCase;
+import toy.test.holidaymanager.holiday.domain.model.Holiday;
 
 import java.time.Year;
 import java.util.List;
@@ -13,14 +15,19 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @Service
 public class RenewNewYearGlobalHolidaysService implements RenewNewYearGlobalHolidaysUseCase {
-    private final RenewGlobalHolidaysUseCase renewGlobalHolidaysUseCase;
+    private final SaveHolidaysService saveHolidaysService;
+    private final FetchGlobalHolidaysUseCase fetchGlobalHolidaysUseCase;
+    private final RemoveGlobalHolidaysUseCase removeGlobalHolidaysUseCase;
 
     @Transactional
     @Override
     public void execute() {
-        List<Integer> years = getRecent2Years();
+        final List<Integer> years = getRecent2Years();
         for (int year : years) {
-            renewGlobalHolidaysUseCase.execute(year);
+            removeGlobalHolidaysUseCase.execute(year);
+
+            final List<Holiday> data = fetchGlobalHolidaysUseCase.fetch(year);
+            saveHolidaysService.execute(data);
         }
     }
 

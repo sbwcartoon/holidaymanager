@@ -11,6 +11,7 @@ import toy.test.holidaymanager.holiday.adapter.out.persistence.mapper.HolidayJpa
 import toy.test.holidaymanager.holiday.adapter.out.persistence.repository.HolidayJpaRepository;
 import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
 import toy.test.holidaymanager.holiday.application.port.in.command.RetrieveFilterCommand;
+import toy.test.holidaymanager.holiday.application.port.in.vo.HolidayYear;
 import toy.test.holidaymanager.holiday.application.port.out.HolidayRepository;
 import toy.test.holidaymanager.holiday.domain.model.Holiday;
 
@@ -51,6 +52,15 @@ public class HolidayAdapter implements HolidayRepository {
             throw new HolidayNotFoundException(year, countryCode);
         }
 
+        holidayJpaRepository.deleteAll(entities);
+    }
+
+    @Override
+    public void deleteAllByYear(HolidayYear year) {
+        final List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(year.value(), null);
+        if (entities.isEmpty()) {
+            return;
+        }
         holidayJpaRepository.deleteAll(entities);
     }
 
