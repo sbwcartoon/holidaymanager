@@ -41,7 +41,7 @@ public class SaveHolidaysTest {
 
         useCase.execute(List.of(holiday));
 
-        List<HolidayJpaEntity> saved = jpaRepository.findAll();
+        final List<HolidayJpaEntity> saved = jpaRepository.findAll();
         assertThat(saved).size().isEqualTo(1);
         assertThat(HolidayJpaMapper.toDomain(saved.getFirst())).isEqualTo(holiday);
     }

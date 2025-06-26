@@ -34,12 +34,12 @@ public class HolidayController {
             @RequestParam(required = false) final List<String> types,
             @PageableDefault(size = 10) final Pageable pageable
     ) {
-        Page<Holiday> holidays = retrieveCountryHolidaysUseCase.execute(
+        final Page<Holiday> holidays = retrieveCountryHolidaysUseCase.execute(
                 RetrieveFilterCommand.from(year, countryCode, from, to, types),
                 pageable
         );
 
-        Page<RetrievedHoliday> retrievedHolidays = holidays.map(RetrievedHoliday::from);
+        final Page<RetrievedHoliday> retrievedHolidays = holidays.map(RetrievedHoliday::from);
         return PageResponse.from(retrievedHolidays);
     }
 

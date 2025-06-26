@@ -21,7 +21,7 @@ public class RenewCountryHolidaysService implements RenewCountryHolidaysUseCase 
     @Transactional
     @Override
     public void execute(final RenewCommand command) {
-        List<Holiday> data = fetchCountryHolidaysUseCase.fetch(
+        final List<Holiday> data = fetchCountryHolidaysUseCase.fetch(
                 command.year().value(),
                 command.countryCode().value()
         );

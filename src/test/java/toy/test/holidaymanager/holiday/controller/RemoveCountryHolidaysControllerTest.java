@@ -46,7 +46,7 @@ public class RemoveCountryHolidaysControllerTest {
         mockMvc.perform(delete("/api/holidays/" + year + "/" + countryCode))
                 .andExpect(status().isOk());
 
-        List<HolidayJpaEntity> saved = jpaRepository.findAll();
+        final List<HolidayJpaEntity> saved = jpaRepository.findAll();
         assertThat(saved).isEqualTo(expectedTotalElements);
     }
 }

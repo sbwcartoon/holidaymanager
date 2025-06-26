@@ -16,14 +16,14 @@ public record RetrieveFilterCommand(
         List<HolidayTypeCode> types
 ) {
     public static RetrieveFilterCommand from(
-            int year,
-            String countryCode,
-            Integer fromMonth,
-            Integer toMonth,
-            List<String> types
+            final int year,
+            final String countryCode,
+            final Integer fromMonth,
+            final Integer toMonth,
+            final List<String> types
     ) {
-        FromDate from = FromDate.from(year, fromMonth);
-        ToDate to = ToDate.from(year, toMonth);
+        final FromDate from = FromDate.from(year, fromMonth);
+        final ToDate to = ToDate.from(year, toMonth);
 
         if (!from.isValid(to)) {
             throw new IllegalArgumentException("from must be less than to");

@@ -5,15 +5,15 @@ public class NagerServerException extends RuntimeException {
         super("Nager Holiday API Fetch Error");
     }
 
-    public NagerServerException(String message) {
+    public NagerServerException(final String message) {
         super(message);
     }
 
-    public NagerServerException(Throwable e) {
+    public NagerServerException(final Throwable e) {
         super(e);
     }
 
-    public NagerServerException(String message, Throwable e) {
+    public NagerServerException(final String message, final Throwable e) {
         super(message, e);
     }
 }

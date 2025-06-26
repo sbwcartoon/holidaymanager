@@ -5,15 +5,15 @@ public class NagerClientException extends RuntimeException {
         super("Client error");
     }
 
-    public NagerClientException(String message) {
+    public NagerClientException(final String message) {
         super(message);
     }
 
-    public NagerClientException(Throwable e) {
+    public NagerClientException(final Throwable e) {
         super(e);
     }
 
-    public NagerClientException(String message, Throwable e) {
+    public NagerClientException(final String message, final Throwable e) {
         super(message, e);
     }
 }

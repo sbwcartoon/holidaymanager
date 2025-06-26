@@ -43,7 +43,7 @@ public class RetrieveCountryHolidaysTest {
                 .toList();
 
         final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", null, null, null);
-        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
+        final Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -60,7 +60,7 @@ public class RetrieveCountryHolidaysTest {
                 .toList();
 
         final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", 5, null, null);
-        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
+        final Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -77,7 +77,7 @@ public class RetrieveCountryHolidaysTest {
                 .toList();
 
         final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", null, 3, null);
-        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
+        final Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -95,7 +95,7 @@ public class RetrieveCountryHolidaysTest {
                 .toList();
 
         final RetrieveFilterCommand command = RetrieveFilterCommand.from(2025, "KR", 3, 5, null);
-        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
+        final Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -115,7 +115,7 @@ public class RetrieveCountryHolidaysTest {
 
         final RetrieveFilterCommand command = RetrieveFilterCommand.from(
                 2025, "KR", null, null, typeCodes.stream().map(HolidayTypeCode::name).toList());
-        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
+        final Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());
@@ -137,7 +137,7 @@ public class RetrieveCountryHolidaysTest {
 
         final RetrieveFilterCommand command = RetrieveFilterCommand.from(
                 2025, "KR", 3, 5, typeCodes.stream().map(HolidayTypeCode::name).toList());
-        Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
+        final Page<Holiday> result = useCase.execute(command, PageRequest.of(0, maxSize));
 
         assertThat(result.getTotalElements()).isEqualTo(expectedTotalElements.size());
         assertThat(result.getContent().size()).isEqualTo(expectedTotalElements.stream().limit(maxSize).count());

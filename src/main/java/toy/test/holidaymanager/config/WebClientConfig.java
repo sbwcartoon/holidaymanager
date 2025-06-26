@@ -11,7 +11,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient nagerWebClient() {
-        HttpClient httpClient = HttpClient.create();
+        final HttpClient httpClient = HttpClient.create();
 
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))

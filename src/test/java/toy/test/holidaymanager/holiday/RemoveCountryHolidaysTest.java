@@ -38,7 +38,7 @@ public class RemoveCountryHolidaysTest {
 
         useCase.execute(RemoveCommand.from(2025, "KR"));
 
-        List<HolidayJpaEntity> saved = jpaRepository.findAll();
+        final List<HolidayJpaEntity> saved = jpaRepository.findAll();
         assertThat(saved).isEqualTo(expectedTotalElements);
     }
 }

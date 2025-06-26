@@ -32,7 +32,7 @@ public class RenewNewYearGlobalHolidaysService implements RenewNewYearGlobalHoli
     }
 
     private List<Integer> getRecent2Years() {
-        int currentYear = Year.now().getValue();
+        final int currentYear = Year.now().getValue();
 
         return IntStream.rangeClosed(currentYear - 1, currentYear)
                 .boxed()

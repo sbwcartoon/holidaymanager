@@ -20,7 +20,7 @@ public class RenewGlobalHolidaysService implements RenewGlobalHolidaysUseCase {
     @Transactional
     @Override
     public void execute(final int year) {
-        List<CountryCode> countryCodes = repository.findAll();
+        final List<CountryCode> countryCodes = repository.findAll();
         for (CountryCode countryCode : countryCodes) {
             renewCountryHolidaysUseCase.execute(RenewCommand.from(year, countryCode.value()));
         }

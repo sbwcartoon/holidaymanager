@@ -24,13 +24,13 @@ public class HolidayAdapter implements HolidayRepository {
 
     @Override
     public void saveAll(final List<Holiday> holidays) {
-        List<HolidayJpaEntity> entities = holidays.stream().map(HolidayJpaMapper::toEntity).toList();
+        final List<HolidayJpaEntity> entities = holidays.stream().map(HolidayJpaMapper::toEntity).toList();
         holidayJpaRepository.saveAll(entities);
     }
 
     @Override
     public Page<Holiday> findAllByCondition(final RetrieveFilterCommand command, final Pageable pageable) {
-        Page<HolidayJpaEntity> result = holidayJpaRepository.findAllByCondition(
+        final Page<HolidayJpaEntity> result = holidayJpaRepository.findAllByCondition(
                 command.countryCode().value(),
                 command.startDate(),
                 command.endDate(),
@@ -44,9 +44,9 @@ public class HolidayAdapter implements HolidayRepository {
     @Transactional
     @Override
     public void deleteAllByCondition(final RemoveCommand command) {
-        int year = command.year().value();
-        String countryCode = command.countryCode().value();
-        List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(year, countryCode);
+        final int year = command.year().value();
+        final String countryCode = command.countryCode().value();
+        final List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(year, countryCode);
 
         if (entities.isEmpty()) {
             throw new HolidayNotFoundException(year, countryCode);
@@ -56,7 +56,7 @@ public class HolidayAdapter implements HolidayRepository {
     }
 
     @Override
-    public void deleteAllByYear(HolidayYear year) {
+    public void deleteAllByYear(final HolidayYear year) {
         final List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(year.value(), null);
         if (entities.isEmpty()) {
             return;

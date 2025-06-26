@@ -20,15 +20,15 @@ public class SaveRecentGlobalHolidaysService implements SaveRecentGlobalHolidays
     @Transactional
     @Override
     public void execute() {
-        List<Integer> years = getRecent5Years();
+        final List<Integer> years = getRecent5Years();
         for (int year : years) {
-            List<Holiday> data = fetchGlobalHolidaysUseCase.fetch(year);
+            final List<Holiday> data = fetchGlobalHolidaysUseCase.fetch(year);
             saveHolidaysService.execute(data);
         }
     }
 
     private List<Integer> getRecent5Years() {
-        int currentYear = Year.now().getValue();
+        final int currentYear = Year.now().getValue();
 
         return IntStream.rangeClosed(currentYear - 4, currentYear)
                 .boxed()

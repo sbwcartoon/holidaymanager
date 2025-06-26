@@ -10,7 +10,7 @@ public record HolidayLocalName(String value) implements Comparable<HolidayLocalN
     }
 
     @Override
-    public int compareTo(HolidayLocalName other) {
+    public int compareTo(final HolidayLocalName other) {
         return this.value.compareTo(other.value);
     }
 }

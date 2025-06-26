@@ -33,7 +33,7 @@ public class HolidayRepositoryTest {
 
         jpaRepository.saveAll(List.of(entity));
 
-        List<HolidayJpaEntity> saved = jpaRepository.findAll();
+        final List<HolidayJpaEntity> saved = jpaRepository.findAll();
         assertThat(saved).size().isEqualTo(1);
         assertThat(saved.getFirst()).isEqualTo(entity);
     }

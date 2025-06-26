@@ -10,7 +10,7 @@ public record CountryCode(String value) implements Comparable<CountryCode> {
     }
 
     @Override
-    public int compareTo(CountryCode other) {
+    public int compareTo(final CountryCode other) {
         return this.value.compareTo(other.value);
     }
 }

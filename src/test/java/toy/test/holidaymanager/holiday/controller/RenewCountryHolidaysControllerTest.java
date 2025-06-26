@@ -49,10 +49,10 @@ public class RenewCountryHolidaysControllerTest {
         mockMvc.perform(post("/api/holidays/" + year + "/" + countryCode + "/refresh"))
                 .andExpect(status().isOk());
 
-        List<HolidayJpaEntity> saved = jpaRepository.findAllByYearAndCountryCode(year, countryCode);
-        List<Holiday> savedHolidays = saved.stream().map(HolidayJpaMapper::toDomain).toList();
+        final List<HolidayJpaEntity> saved = jpaRepository.findAllByYearAndCountryCode(year, countryCode);
+        final List<Holiday> savedHolidays = saved.stream().map(HolidayJpaMapper::toDomain).toList();
 
-        List<Holiday> fetched = fetchCountryHolidaysUseCase.fetch(year, countryCode);
+        final List<Holiday> fetched = fetchCountryHolidaysUseCase.fetch(year, countryCode);
 
         assertThat(savedHolidays)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")

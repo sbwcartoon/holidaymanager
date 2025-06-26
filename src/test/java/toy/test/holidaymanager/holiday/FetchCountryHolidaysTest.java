@@ -19,7 +19,7 @@ public class FetchCountryHolidaysTest {
 
     @Test
     public void 공휴일_fetch_성공() {
-        List<Holiday> result = fetchCountryHolidaysUseCase.fetch(2025, "KR");
+        final List<Holiday> result = fetchCountryHolidaysUseCase.fetch(2025, "KR");
         assertThat(result).isNotEmpty();
     }
 
