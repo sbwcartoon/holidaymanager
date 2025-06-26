@@ -38,14 +38,22 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
             predicates.add(holidayTypeJpaEntity.code.in(types));
         }
 
+        List<String> ids = queryFactory
+                .select(holidayJpaEntity.id)
+                .from(holidayJpaEntity)
+                .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity)
+                .where(predicates.toArray(new BooleanExpression[0]))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(holidayJpaEntity.date.asc())
+                .fetch();
+
         List<HolidayJpaEntity> result = queryFactory
                 .selectFrom(holidayJpaEntity)
                 .distinct()
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity).fetchJoin()
                 .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity).fetchJoin()
-                .where(predicates.toArray(new BooleanExpression[0]))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .where(holidayJpaEntity.id.in(ids))
                 .orderBy(holidayJpaEntity.date.asc())
                 .fetch();
 
@@ -53,7 +61,6 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                 .select(holidayJpaEntity.countDistinct())
                 .from(holidayJpaEntity)
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity)
-                .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity)
                 .where(predicates.toArray(new BooleanExpression[0]));
 
         return PageableExecutionUtils.getPage(
