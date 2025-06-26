@@ -11,7 +11,10 @@ import java.util.UUID;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Entity
-@Table(name = "holiday_type")
+@Table(
+        name = "holiday_type",
+        indexes = @Index(name = "idx_holiday_type_code_holiday_id", columnList = "code, holiday_id")
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HolidayTypeJpaEntity {
     @Builder.Default

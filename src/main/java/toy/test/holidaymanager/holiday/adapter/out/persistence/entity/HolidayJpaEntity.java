@@ -14,7 +14,13 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Entity
-@Table(name = "holiday")
+@Table(
+        name = "holiday",
+        indexes = {
+                @Index(name = "idx_holiday_country_code_date", columnList = "country_code, date"),
+                @Index(name = "idx_holiday_date", columnList = "date")
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HolidayJpaEntity {
     @Builder.Default
