@@ -39,13 +39,10 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
         }
 
         List<String> ids = queryFactory
-                .select(holidayJpaEntity.id)
+                .selectDistinct(holidayJpaEntity.id)
                 .from(holidayJpaEntity)
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity)
                 .where(predicates.toArray(new BooleanExpression[0]))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(holidayJpaEntity.date.asc())
                 .fetch();
 
         List<HolidayJpaEntity> result = queryFactory
@@ -55,6 +52,8 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                 .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity).fetchJoin()
                 .where(holidayJpaEntity.id.in(ids))
                 .orderBy(holidayJpaEntity.date.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
