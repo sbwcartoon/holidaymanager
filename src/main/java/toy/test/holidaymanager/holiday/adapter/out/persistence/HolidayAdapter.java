@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.entity.HolidayJpaEntity;
-import toy.test.holidaymanager.holiday.adapter.out.persistence.exception.HolidayNotFoundException;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.mapper.HolidayJpaMapper;
 import toy.test.holidaymanager.holiday.adapter.out.persistence.repository.HolidayJpaRepository;
 import toy.test.holidaymanager.holiday.application.port.in.command.RemoveCommand;
@@ -44,14 +43,13 @@ public class HolidayAdapter implements HolidayRepository {
     @Transactional
     @Override
     public void deleteAllByCondition(final RemoveCommand command) {
-        final int year = command.year().value();
-        final String countryCode = command.countryCode().value();
-        final List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(year, countryCode);
-
+        final List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(
+                command.year().value(),
+                command.countryCode().value()
+        );
         if (entities.isEmpty()) {
-            throw new HolidayNotFoundException(year, countryCode);
+            return;
         }
-
         holidayJpaRepository.deleteAll(entities);
     }
 

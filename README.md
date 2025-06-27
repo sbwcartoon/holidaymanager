@@ -184,7 +184,6 @@ http://localhost:{PORT}/swagger-ui/index.html
         - body: (없음)
     - 실패 http status code
         - 400 bad request: 전달된 정보가 유효하지 않음
-        - 404 not found: 해당하는 데이터가 없음
         - 500 internal server error: 서버 오류
 
 ## Batch
