@@ -53,6 +53,7 @@ public class HolidayAdapter implements HolidayRepository {
         holidayJpaRepository.deleteAll(entities);
     }
 
+    @Transactional
     @Override
     public void deleteAllByYear(final HolidayYear year) {
         final List<HolidayJpaEntity> entities = holidayJpaRepository.findAllByYearAndCountryCode(year.value(), null);
