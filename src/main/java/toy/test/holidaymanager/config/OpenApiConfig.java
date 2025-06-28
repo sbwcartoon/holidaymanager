@@ -14,7 +14,7 @@ public class OpenApiConfig {
                         new Info()
                                 .title("Holiday Manager")
                                 .description("전 세계 공휴일 관리")
-                                .version("1.0.0")
+                                .version("1.0.1")
                 );
     }
 }
