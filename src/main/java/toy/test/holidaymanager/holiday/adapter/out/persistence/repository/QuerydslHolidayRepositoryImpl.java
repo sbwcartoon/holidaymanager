@@ -12,6 +12,7 @@ import toy.test.holidaymanager.holiday.domain.vo.HolidayTypeCode;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,21 +40,25 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
         }
 
         List<String> ids = queryFactory
-                .selectDistinct(holidayJpaEntity.id)
+                .select(holidayJpaEntity.id)
                 .from(holidayJpaEntity)
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity)
                 .where(predicates.toArray(new BooleanExpression[0]))
+                .groupBy(holidayJpaEntity.id)
+                .orderBy(holidayJpaEntity.date.min().asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
-        List<HolidayJpaEntity> result = queryFactory
+        List<HolidayJpaEntity> result = ids.isEmpty()
+                ? Collections.emptyList()
+                : queryFactory
                 .selectFrom(holidayJpaEntity)
                 .distinct()
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity).fetchJoin()
                 .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity).fetchJoin()
                 .where(holidayJpaEntity.id.in(ids))
                 .orderBy(holidayJpaEntity.date.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
