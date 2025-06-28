@@ -45,7 +45,7 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity)
                 .where(predicates.toArray(new BooleanExpression[0]))
                 .groupBy(holidayJpaEntity.id)
-                .orderBy(holidayJpaEntity.date.min().asc())
+                .orderBy(holidayJpaEntity.date.min().asc(), holidayJpaEntity.name.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -58,7 +58,7 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                 .leftJoin(holidayJpaEntity.types, holidayTypeJpaEntity).fetchJoin()
                 .leftJoin(holidayJpaEntity.counties, holidayCountyJpaEntity).fetchJoin()
                 .where(holidayJpaEntity.id.in(ids))
-                .orderBy(holidayJpaEntity.date.asc())
+                .orderBy(holidayJpaEntity.date.asc(), holidayJpaEntity.countryCode.asc(), holidayJpaEntity.localName.asc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
@@ -85,7 +85,7 @@ public class QuerydslHolidayRepositoryImpl implements QuerydslHolidayRepository 
                         Objects.isNull(countryCode) ? null : holidayJpaEntity.countryCode.eq(countryCode),
                         holidayJpaEntity.date.year().eq(year)
                 )
-                .orderBy(holidayJpaEntity.date.asc())
+                .orderBy(holidayJpaEntity.date.asc(), holidayJpaEntity.countryCode.asc(), holidayJpaEntity.localName.asc())
                 .fetch();
     }
 }

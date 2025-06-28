@@ -18,7 +18,7 @@ import java.util.Set;
         name = "holiday",
         indexes = {
                 @Index(name = "idx_holiday_country_code_date", columnList = "country_code, date"),
-                @Index(name = "idx_holiday_date", columnList = "date")
+                @Index(name = "idx_holiday_date_country_code_local_name", columnList = "date, country_code, local_name")
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
